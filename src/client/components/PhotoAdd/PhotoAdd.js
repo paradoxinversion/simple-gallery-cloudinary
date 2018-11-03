@@ -11,10 +11,14 @@ class PhotoAdd extends React.Component {
       copyrightYear: "",
       tags: "",
       dateTaken: "",
-      nsfw: false
+      nsfw: false,
+      photo: null,
+      photoDataURL: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePhotoSubmit = this.handlePhotoSubmit.bind(this);
+    this.fileInput = React.createRef();
+    this.fileReader = new FileReader();
   }
 
   componentDidMount() {
@@ -30,6 +34,9 @@ class PhotoAdd extends React.Component {
       copyrightYear: currentDateString,
       dateTaken: currentDateString
     });
+    this.fileReader.onload = e => {
+      return e.target.result;
+    };
   }
 
   handleChange() {
@@ -44,7 +51,17 @@ class PhotoAdd extends React.Component {
 
   handlePhotoSubmit(e) {
     e.preventDefault();
-    addPhoto(this.state);
+    console.log(this.fileInput.current.files[0]);
+    this.setState(
+      state => {
+        return {
+          photo: this.fileInput.current.files[0]
+        };
+      },
+      () => {
+        addPhoto(this.state);
+      }
+    );
   }
 
   render() {
@@ -121,8 +138,42 @@ class PhotoAdd extends React.Component {
             value={nsfw}
             onChange={this.handleChange}
           />
-          <button onClick={this.handlePhotoSubmit}>Add Photo</button>
+          <label htmlFor="photo-add">Add Photo</label>
+          <input
+            id="photo-add"
+            type="file"
+            name="photo"
+            ref={this.fileInput}
+            // onClick={this.handlePhotoSubmit}
+            accept="image/png, image/jpeg"
+            onChange={e => {
+              this.setState(
+                state => {
+                  return { photo: this.fileInput.current.files[0] };
+                },
+                async () => {
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                    this.setState({
+                      photoDataURL: e.target.result
+                    });
+                  };
+                  this.setState({
+                    photoDataURL: reader.readAsDataURL(this.state.photo)
+                  });
+                }
+              );
+            }}
+          />
+          <img
+            src={
+              this.state.photoDataURL !== null ? this.state.photoDataURL : ""
+            }
+            alt="Preview..."
+            height="200"
+          />
         </form>
+        <button onClick={this.handlePhotoSubmit}>Submit</button>
       </div>
     );
   }

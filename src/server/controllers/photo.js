@@ -13,7 +13,6 @@ const getAll = async (req, res) => {
 
 const addPhoto = async (req, res) => {
   try {
-    console.log("Adding Photo", req);
     const addPhotoResult = await PhotoActions.addPhoto(req.body);
     res.status(201).json({
       result: { photo: addPhotoResult }

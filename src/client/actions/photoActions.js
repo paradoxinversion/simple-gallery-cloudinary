@@ -6,6 +6,7 @@ export const getPhotos = async () => {
 };
 
 export const addPhoto = async ({
+  photo,
   title,
   caption,
   copyrightHolder,
@@ -14,7 +15,9 @@ export const addPhoto = async ({
   dateTaken,
   nsfw
 }) => {
+  console.log(photo);
   const result = await axios.post("http://localhost:3000/api/photo", {
+    photo,
     title,
     caption,
     copyrightHolder,

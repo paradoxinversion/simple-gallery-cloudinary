@@ -1,5 +1,5 @@
 const Photo = require("../schema/Photo");
-
+const cloudinary = require("cloudinary");
 const getAllPhotos = async () => {
   try {
     const photos = await Photo.find();
@@ -10,6 +10,7 @@ const getAllPhotos = async () => {
 };
 
 const addPhoto = async ({
+  photo,
   title,
   caption,
   copyrightHolder,
@@ -19,7 +20,9 @@ const addPhoto = async ({
   nsfw
 }) => {
   try {
-    console.log("got photo::", caption);
+    console.log(photo);
+    const cloudinaryResponse = await cloudinary.v2.uploader.upload(photo);
+    console.log("CLOUD::", cloudinaryResponse);
     const newPhoto = new Photo({
       title,
       caption,
