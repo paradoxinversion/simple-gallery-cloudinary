@@ -1,0 +1,9 @@
+#photo-add-form {
+  display: grid;
+  grid-template-columns: 180px auto;
+}
+
+#photo-add-form > label {
+  text-align: right;
+  margin-right: 1rem;
+}

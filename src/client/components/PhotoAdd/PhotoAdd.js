@@ -1,5 +1,6 @@
 import React from "react";
 import { addPhoto } from "../../actions/photoActions";
+import "./PhotoAdd.css";
 class PhotoAdd extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,22 @@ class PhotoAdd extends React.Component {
       nsfw: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handlePhotoSubmit = this.handlePhotoSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const now = new Date(Date.now());
+
+    // If the date is before the 10th, rawDate will have one digit
+    // This needs to be padded with a 0 to display the calendor properly
+    const rawDate = new Date(Date.now()).getDate();
+    let strDate = rawDate < 10 ? `0${rawDate}` : `${rawDate}`;
+
+    const currentDateString = `${now.getFullYear()}-${now.getMonth()}-${strDate}`;
+    this.setState({
+      copyrightYear: currentDateString,
+      dateTaken: currentDateString
+    });
   }
 
   handleChange() {
@@ -25,18 +42,9 @@ class PhotoAdd extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const now = new Date(Date.now());
-    const rawDate = new Date(Date.now()).getDate();
-    let strDate = rawDate < 10 ? `0${rawDate}` : `${rawDate}`;
-
-    const currentDateString = `${new Date(Date.now()).getFullYear()}-${new Date(
-      Date.now()
-    ).getMonth()}-${strDate}`;
-    this.setState({
-      copyrightYear: currentDateString,
-      dateTaken: currentDateString
-    });
+  handlePhotoSubmit(e) {
+    e.preventDefault();
+    addPhoto(this.state);
   }
 
   render() {
@@ -50,9 +58,9 @@ class PhotoAdd extends React.Component {
       nsfw
     } = this.state;
     return (
-      <div>
+      <div id="photo-add">
         <p>Add a Photo</p>
-        <form>
+        <form id="photo-add-form">
           <label htmlFor="photo-title">Title</label>
           <input
             id="photo-title"
@@ -113,12 +121,7 @@ class PhotoAdd extends React.Component {
             value={nsfw}
             onChange={this.handleChange}
           />
-          <button
-            onClick={async () => {
-              addPhoto();
-            }}>
-            Add Photo
-          </button>
+          <button onClick={this.handlePhotoSubmit}>Add Photo</button>
         </form>
       </div>
     );

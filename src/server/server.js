@@ -1,10 +1,19 @@
+const dotenv = require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const index = require("./api/index");
 const mongooseClient = require("./database/client");
-
+const cloudinary = require("cloudinary");
 const app = express();
 const port = 3000;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 mongooseClient();
 
 // parse application/x-www-form-urlencoded

@@ -1,15 +1,26 @@
 const PhotoActions = require("../database/actions/photo");
 
-const addPhoto = async (req, res) => {
+const getAll = async (req, res) => {
   try {
-    console.log("Adding Photo", req);
-    const addPhotoResult = await PhotoActions.addPhoto(req.body);
-    res.status(201).json({
-      result: addPhotoResult
+    const photos = await PhotoActions.getAllPhotos();
+    res.status(200).json({
+      photos
     });
   } catch (e) {
     res.json({ error: e.message });
   }
 };
 
-module.exports = { addPhoto };
+const addPhoto = async (req, res) => {
+  try {
+    console.log("Adding Photo", req);
+    const addPhotoResult = await PhotoActions.addPhoto(req.body);
+    res.status(201).json({
+      result: { photo: addPhotoResult }
+    });
+  } catch (e) {
+    res.json({ error: e.message });
+  }
+};
+
+module.exports = { addPhoto, getAll };
