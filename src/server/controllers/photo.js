@@ -4,9 +4,8 @@ const addPhoto = async (req, res) => {
   try {
     console.log("Adding Photo", req);
     const addPhotoResult = await PhotoActions.addPhoto(req.body);
-    console.log(addPhotoResult);
     res.status(201).json({
-      result: "Photo Added"
+      result: addPhotoResult
     });
   } catch (e) {
     res.json({ error: e.message });

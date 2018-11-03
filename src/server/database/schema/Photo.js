@@ -7,7 +7,9 @@ const PhotoSchema = new Schema({
   copyrightYear: { type: Date },
   dateTaken: { type: Date },
   nsfw: { type: Boolean },
-  keywords: { type: [String] }
+  tags: { type: [String] },
+  title: { type: String },
+  dateUploaded: { type: Date }
 });
 
 const PhotoModel = mongoose.model("Photo", PhotoSchema);
