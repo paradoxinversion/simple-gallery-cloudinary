@@ -9,7 +9,11 @@ const PhotoSchema = new Schema({
   nsfw: { type: Boolean },
   tags: { type: [String] },
   title: { type: String },
-  dateUploaded: { type: Date }
+  dateUploaded: { type: Date },
+  width: { type: Number },
+  height: { type: Number },
+  format: { type: String },
+  bytes: { type: Number }
 });
 
 const PhotoModel = mongoose.model("Photo", PhotoSchema);

@@ -17,10 +17,10 @@ cloudinary.config({
 mongooseClient();
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: "5mb", extended: false }));
 
 // parse application/json
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "5mb" }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

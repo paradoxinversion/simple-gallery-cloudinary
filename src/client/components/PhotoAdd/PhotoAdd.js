@@ -17,8 +17,8 @@ class PhotoAdd extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePhotoSubmit = this.handlePhotoSubmit.bind(this);
+    this.handlePhotoSelect = this.handlePhotoSelect.bind(this);
     this.fileInput = React.createRef();
-    this.fileReader = new FileReader();
   }
 
   componentDidMount() {
@@ -34,9 +34,6 @@ class PhotoAdd extends React.Component {
       copyrightYear: currentDateString,
       dateTaken: currentDateString
     });
-    this.fileReader.onload = e => {
-      return e.target.result;
-    };
   }
 
   handleChange() {
@@ -47,6 +44,25 @@ class PhotoAdd extends React.Component {
     this.setState({
       [name]: value
     });
+  }
+
+  handlePhotoSelect(e) {
+    this.setState(
+      state => {
+        return { photo: this.fileInput.current.files[0] };
+      },
+      async () => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.setState({
+            photoDataURL: e.target.result
+          });
+        };
+        this.setState({
+          photoDataURL: reader.readAsDataURL(this.state.photo)
+        });
+      }
+    );
   }
 
   handlePhotoSubmit(e) {
@@ -144,26 +160,8 @@ class PhotoAdd extends React.Component {
             type="file"
             name="photo"
             ref={this.fileInput}
-            // onClick={this.handlePhotoSubmit}
             accept="image/png, image/jpeg"
-            onChange={e => {
-              this.setState(
-                state => {
-                  return { photo: this.fileInput.current.files[0] };
-                },
-                async () => {
-                  const reader = new FileReader();
-                  reader.onload = e => {
-                    this.setState({
-                      photoDataURL: e.target.result
-                    });
-                  };
-                  this.setState({
-                    photoDataURL: reader.readAsDataURL(this.state.photo)
-                  });
-                }
-              );
-            }}
+            onChange={this.handlePhotoSelect}
           />
           <img
             src={

@@ -1,6 +1,6 @@
 import React from "react";
 import { getPhotos } from "../../actions/photoActions";
-
+import "./GalleryDisplay.css";
 class GalleryDisplay extends React.Component {
   constructor(props) {
     super(props);
@@ -11,13 +11,22 @@ class GalleryDisplay extends React.Component {
   async componentDidMount() {
     const photos = await getPhotos();
     this.setState({
-      photos
+      photos: photos.data.photos
     });
   }
   render() {
     return (
       <div>
-        <p>Derp</p>
+        {this.state.photos &&
+          this.state.photos.map(photo => {
+            return (
+              <img
+                className="gallery__photo"
+                src={photo.url}
+                alt={photo.caption}
+              />
+            );
+          })}
       </div>
     );
   }
