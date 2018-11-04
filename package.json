@@ -16,7 +16,8 @@
     "react-dom": "^16.5.2"
   },
   "scripts": {
-    "start": "concurrently \"mongod\" \"yarn run start-server\" \"yarn run start-client\"",
+    "start": "concurrently \"yarn run start-server\" \"yarn run start-client\"",
+    "start-dev": "concurrently \"mongod\" \"yarn run start-server\" \"yarn run start-client\"",
     "start-client": "parcel ./src/client/index.html --no-cache",
     "start-server": "nodemon ./src/server/server.js"
   },
